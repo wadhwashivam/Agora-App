@@ -21,4 +21,57 @@ model User {
   bio         String?
   avatar      String?
   githubId    String? @unique
+  
+  posts       Post[]
+  comments    Comment[]
+  likes       Like[]
+
+  following   Follow[] @relation("Following")
+  followers   Follow[] @relation("Followers")
+}
+
+model Post {
+  id        String @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  authorId  String
+
+  postedBy  User  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments  Comment[]
+  likes     Like[]
+}
+
+model Follow {
+  id  String  @id @default(cuid())
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+
+  follower    User  @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User  @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+}
+
+model Like {
+  id        String @id @default(cuid())
+  userId    String
+  postId    String
+  createdAt DateTime  @default(now())
+
+  user  User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post  Post  @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
+}
+
+model Comment {
+  id        String @id @default(cuid())
+  authorId  String
+  postId    String
+  createdAt DateTime @default(now())
+  content   String
+
+  author  User  @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  post  Post  @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
