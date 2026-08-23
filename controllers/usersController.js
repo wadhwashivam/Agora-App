@@ -1,4 +1,11 @@
 import * as db from "../database/queries.js";
+import { body, validationResult } from "express-validator";
+
+export const validateProfile = [
+    body("name").optional().trim().isLength({max: 50}).withMessage("Name can be maximum 12 characters.").escape(),
+    body("bio").optional().trim().isLength({max: 100}).withMessage("Bio can be maximum 100 characters.").escape(),
+    body("avatar").optional().isURL().withMessage("Avatar can only be a URL of an image")
+];
 
 async function getUsers(req,res,next){
     try {
@@ -49,4 +56,33 @@ async function toggleFollow(req,res,next){
     }
 }
 
-export { getUsers, userProfile, toggleFollow }
+async function editProfile(req,res,next){
+
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+        const userId = req.params.id;
+        const { name, bio, avatar } = req.body;
+
+        const updates = {};
+        if(name !== undefined){
+            updates.name = name;
+        }
+        if(bio !== undefined){
+            updates.bio = bio;
+        }
+        if(avatar !== undefined){
+            updates.avatar = avatar;
+        }
+
+        const updatedProfile = await db.editUserProfile(userId, updates);
+        res.json(updatedProfile);
+    } catch (error) {
+        next(error);
+    }
+}
+
+export { getUsers, userProfile, toggleFollow, editProfile }

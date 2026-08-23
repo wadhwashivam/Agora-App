@@ -100,5 +100,109 @@ async function deleteFollow(followerId, followingId) {
     });
 }
 
+async function createPost(myId, content){
+    return prisma.post.create({
+        data: { authorId: myId, content: content},
+    });
+}
 
-export { getUserByUsername, getUserById, getUserByGithubId, createUserFromGithub, createUser, getAllUsers, getUserProfile, findFollow, createFollow, deleteFollow };
+async function getPostById(postId){
+    return prisma.post.findUnique({
+        where: {id: postId},
+        select: {
+            id: true,
+            content: true,
+            createdAt: true,
+            postedBy: {
+                select: {
+                    id: true,
+                    username: true,
+                    name: true,
+                    avatar: true,
+                }
+            },
+            comments: {
+                orderBy: { createdAt: "asc"},
+                select: {
+                    id: true,
+                    content: true,
+                    createdAt: true,
+                    author: {
+                        select: {
+                            id: true,
+                            username: true,
+                            name: true,
+                            avatar: true,
+                        }
+                    }
+                }
+            },
+            _count: {select: {likes: true}}
+        }
+    });
+}
+
+async function createComment(myId, postId, content){
+    return prisma.comment.create({
+        data: { authorId: myId, postId: postId, content: content}
+    });
+}
+
+async function findLike(myId, postId){
+    return prisma.like.findUnique({
+        where: {userId_postId: {userId: myId, postId}}
+    });
+}
+
+async function createLike(myId, postId){
+    return prisma.like.create({
+        data: { userId: myId, postId}
+    });
+}
+
+async function deleteLike(myId, postId){
+    return prisma.like.delete({
+        where: {userId_postId: {userId: myId, postId}}
+    });
+}
+
+
+async function getFeedPosts(myId, { skip = 0, take = 20} = {}){
+    const following = await prisma.follow.findMany({
+        where: {followerId: myId},
+        select: {followingId: true}
+    });
+
+    const authorIds = [myId, ...following.map(f => f.followingId)];
+
+    return prisma.post.findMany({
+        where: { authorId: {in: authorIds}},
+        orderBy: {createdAt: "desc"},
+        skip,
+        take,
+        select: {
+            id: true,
+            content: true,
+            createdAt: true,
+            postedBy: {
+                select: {
+                    id: true,
+                    username: true,
+                    name: true,
+                    avatar: true,
+                }
+            },
+            _count: { select: {likes: true, comments: true}}
+        }
+    });
+}
+
+async function editUserProfile(userId, updates){
+    return prisma.user.update({
+        where: {id: userId},
+        data: updates,
+        select: {id: true, username: true, name: true, bio: true, avatar: true},
+    });
+}
+
+export { getUserByUsername, getUserById, getUserByGithubId, createUserFromGithub, createUser, getAllUsers, getUserProfile, findFollow, createFollow, deleteFollow, createPost, getPostById, createComment, findLike, createLike, deleteLike, getFeedPosts, editUserProfile };

@@ -5,6 +5,8 @@ async function errorHandler(err, req, res, next) {
         return res.status(409).json({ message: "Username already exists." });
     } else if (err.code === "P2025"){
         return res.status(404).json({ message: "User Profile not found."});
+    } else if(err.code === "P2003"){
+        return res.status(404).json({message: "Referenced resource not found."});
     } else{
         return res.status(500).json({
             message: "Something went wrong.",

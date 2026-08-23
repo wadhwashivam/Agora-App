@@ -10,6 +10,9 @@ import "./config/passport.js";
 import indexRouter from "./routes/indexRouter.js";
 import authenticationRouter from "./routes/authenticationRouter.js";
 import errorHandler from "./middleware/error.js";
+import usersRouter from "./routes/usersRouter.js";
+import postsRouter from "./routes/postsRouter.js";
+
 
 const app = express();
 app.use(cors());
@@ -19,6 +22,8 @@ app.use(express.json());
 
 app.use("/", indexRouter);
 app.use("/", authenticationRouter);
+app.use("/", usersRouter);
+app.use("/", postsRouter);
 app.use(errorHandler);
 
 app.listen(process.env.PORT, (error) =>{
