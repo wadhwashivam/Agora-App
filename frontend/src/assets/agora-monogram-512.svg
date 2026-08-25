@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+    <rect width="512" height="512" fill="#0D0D0D"/>
+    <g transform="translate(106, 86)" fill="none" stroke="#FFFFFF" stroke-width="28" stroke-linejoin="miter">
+        <!-- Outer Triangular A Architecture -->
+        <polygon points="150,20 20,320 280,320"/>
+        <!-- Inner Forum Gateway Cutout -->
+        <polygon points="150,110 80,260 220,260" fill="#0D0D0D" stroke="#0D0D0D" stroke-width="10"/>
+        <!-- Horizontal Structural Crossbar -->
+        <line x1="60" y1="230" x2="240" y2="230" stroke="#FFFFFF" stroke-width="24"/>
+        <!-- Central Inner Apex Notch -->
+        <polygon points="150,100 110,190 190,190" fill="#FFFFFF" stroke="none"/>
+    </g>
+</svg>

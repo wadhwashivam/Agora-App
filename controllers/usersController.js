@@ -20,8 +20,9 @@ async function getUsers(req,res,next){
 
 async function userProfile(req,res,next){
     try {
+        const myId = req.user.id;
         const otherUserId = req.params.id;
-        const userProfile = await db.getUserProfile(otherUserId);
+        const userProfile = await db.getUserProfile(myId, otherUserId);
 
         if(!userProfile){
             return res.status(404).json({ message: "User not found." });

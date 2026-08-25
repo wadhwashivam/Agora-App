@@ -60,26 +60,40 @@ async function getAllUsers(myId){
     }));
 }
 
-async function getUserProfile(otherUserId){
-    return prisma.user.findUnique({
-        where: {id: otherUserId},
-        select: {
-            id: true,
-            username: true,
-            name: true,
-            bio: true,
-            avatar: true,
-            posts: {
-                orderBy: { createdAt: "desc" },
-                select: {
-                    id: true,
-                    content: true,
-                    createdAt: true,
-                    _count: {select: { likes: true, comments: true}}
+async function getUserProfile(myId, otherUserId){
+    const [profile, existingFollow] = await Promise.all([
+        prisma.user.findUnique({
+            where: {id: otherUserId},
+            select: {
+                id: true,
+                username: true,
+                name: true,
+                bio: true,
+                avatar: true,
+                posts: {
+                    orderBy: { createdAt: "desc" },
+                    select: {
+                        id: true,
+                        content: true,
+                        createdAt: true,
+                        _count: {select: { likes: true, comments: true}}
+                    }
                 }
             }
-        }
-    });
+        }),
+
+        prisma.follow.findUnique({
+            where: { followerId_followingId: {followerId: myId, followingId: otherUserId}}
+        })
+    ]);
+
+    if(!profile){
+        return null;
+    }
+    return {
+        ...profile,
+        isFollowing: !!existingFollow
+    };
 }
 
 async function findFollow(followerId, followingId){
