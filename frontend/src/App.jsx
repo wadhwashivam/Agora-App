@@ -8,6 +8,7 @@ import UserProfile from "./pages/UserProfile";
 import UserIndexPage from "./pages/UserIndexPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import PostPage from "./pages/PostPage";
+import ProtectedLayout from "./components/ProtectedLayout";
 
 function App() {
 
@@ -16,11 +17,13 @@ function App() {
       <Route path='/' element= {<ProtectedRoute><Navigate to= "/feed" replace/></ProtectedRoute>} />
       <Route path='/login' element={<Login />} />
       <Route path='/signup' element={<Signup />} />
-      <Route path='/feed' element = {<ProtectedRoute><FeedPage /></ProtectedRoute>} />
-      <Route path= '/users' element = {<ProtectedRoute><UserIndexPage /></ProtectedRoute>} />
-      <Route path='/users/:id' element = {<ProtectedRoute><UserProfile /></ProtectedRoute>} />
-      <Route path='/profile/edit' element= {<ProtectedRoute><EditProfile /></ProtectedRoute>}  />
-      <Route path='/posts/:postId' element = {<ProtectedRoute><PostPage /></ProtectedRoute>} />
+      <Route element={<ProtectedRoute><ProtectedLayout /></ProtectedRoute>}>
+        <Route path='/feed' element = {<FeedPage />} />
+        <Route path= '/users' element = {<UserIndexPage />} />
+        <Route path='/users/:id' element = {<UserProfile />} />
+        <Route path='/profile/edit' element= {<EditProfile />}  />
+        <Route path='/posts/:postId' element = {<PostPage />} />
+      </Route>      
     </Routes>
   )
 }
