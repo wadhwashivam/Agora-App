@@ -1,7 +1,7 @@
 import { Box, Typography, TextField, Button, Link } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { signup } from '../api/auth';
 
 const UI = '"Work Sans", system-ui, sans-serif';
 const SERIF = '"Lora", Georgia, serif';
@@ -21,8 +21,7 @@ function SignupForm(){
 
   const [ errorMessage, setErrorMessage ] = useState("");
   const [ submitting, setSubmitting ] = useState(false);
-  
-  const { signup } = useAuth();
+
   const navigate = useNavigate();
 
   async function signupSubmitHandler(e){
