@@ -189,7 +189,7 @@ async function getFeedPosts(myId, { skip = 0, take = 20} = {}){
 
     const authorIds = [myId, ...following.map(f => f.followingId)];
 
-    return prisma.post.findMany({
+    const posts = await prisma.post.findMany({
         where: { authorId: {in: authorIds}},
         orderBy: {createdAt: "desc"},
         skip,
@@ -209,6 +209,20 @@ async function getFeedPosts(myId, { skip = 0, take = 20} = {}){
             _count: { select: {likes: true, comments: true}}
         }
     });
+
+    const postIds = posts.map(p => p.id);
+
+    const userLikes = await prisma.like.findMany({
+        where: {userId: myId, postId: { in: postIds } },
+        select: { postId: true }
+    });
+
+    const likedPostIds = new Set(userLikes.map(l => l.postId));
+
+    return posts.map(post => ({
+        ...post,
+        isLiked: likedPostIds.has(post.id),
+    }));
 }
 
 async function editUserProfile(userId, updates){
