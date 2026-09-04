@@ -18,8 +18,8 @@ async function apiRequest(endpoint, options = {}){
         try {
             const errorData = await response.json();
             message = errorData.message || errorData.errors?.[0]?.msg || message;    
-        } catch {
-            
+        } catch(error) {
+            console.error(error)
         }
         
         throw new Error(message);
