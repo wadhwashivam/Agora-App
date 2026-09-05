@@ -29,8 +29,8 @@ async function postsList(req,res,next){
     try {
         const myId = req.user.id;
 
-        const page = parseInt(req.query.page) || 1;
-        const limit = parseInt(req.query.limit) || 20;
+        let page = parseInt(req.query.page) || 1;
+        let limit = parseInt(req.query.limit) || 20;
 
         page = Math.max(page, 1);
         limit = Math.min(Math.max(limit,1), 50);
