@@ -11,7 +11,7 @@ function countWords(text){
     return text.trim() ? text.trim().split(/\s+/).length : 0;
 }
 
-function PostComposer( onPostCreated ){
+function PostComposer(){
     const {user} = useAuth(); 
     const [submitting, setSubmitting] = useState(false);
     const [draft, setDraft] = useState('');

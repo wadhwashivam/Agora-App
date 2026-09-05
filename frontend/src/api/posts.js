@@ -32,7 +32,7 @@ async function postCommentsByPostId(postId, {content}){
     return data;
 }
 
-async function postLikesByPostId(postId){
+async function postLikedByPostId(postId){
     const data = await apiRequest(`/posts/${postId}/likes`, {
         method: "POST",
     });
@@ -40,4 +40,4 @@ async function postLikesByPostId(postId){
     return data;
 }
 
-export { createPost, getPostsList, getPostById, postCommentsByPostId, postLikesByPostId };
+export { createPost, getPostsList, getPostById, postCommentsByPostId, postLikedByPostId };
