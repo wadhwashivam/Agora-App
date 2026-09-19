@@ -120,40 +120,53 @@ async function createPost(myId, content){
     });
 }
 
-async function getPostById(postId){
-    return prisma.post.findUnique({
-        where: {id: postId},
-        select: {
-            id: true,
-            content: true,
-            createdAt: true,
-            postedBy: {
-                select: {
-                    id: true,
-                    username: true,
-                    name: true,
-                    avatar: true,
-                }
-            },
-            comments: {
-                orderBy: { createdAt: "asc"},
-                select: {
-                    id: true,
-                    content: true,
-                    createdAt: true,
-                    author: {
-                        select: {
-                            id: true,
-                            username: true,
-                            name: true,
-                            avatar: true,
+async function getPostById(postId, myId){
+    const [post, existingLike] = await Promise.all([
+        prisma.post.findUnique({
+            where: {id: postId},
+            select: {
+                id: true,
+                content: true,
+                createdAt: true,
+                postedBy: {
+                    select: {
+                        id: true,
+                        username: true,
+                        name: true,
+                        avatar: true,
+                    }
+                },
+                comments: {
+                    orderBy: { createdAt: "asc"},
+                    select: {
+                        id: true,
+                        content: true,
+                        createdAt: true,
+                        author: {
+                            select: {
+                                id: true,
+                                username: true,
+                                name: true,
+                                avatar: true,
+                            }
                         }
                     }
-                }
-            },
-            _count: {select: {likes: true}}
+                },
+                _count: {select: {likes: true, comments: true}}
         }
-    });
+        }),
+
+        prisma.like.findFirst({
+            where: { userId: myId, postId: postId}
+        })
+    ]);
+
+    if(!post) return null;
+
+    return {
+        ...post,
+        isLiked: !!existingLike,
+    };
 }
 
 async function createComment(myId, postId, content){

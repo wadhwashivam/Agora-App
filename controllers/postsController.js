@@ -47,8 +47,9 @@ async function postsList(req,res,next){
 
 async function getPost(req,res,next){
     try {
-        const postId = req.params.id;
-        const post = await db.getPostById(postId);
+        const postId = req.params.postId;
+        const myId = req.user.id;
+        const post = await db.getPostById(postId, myId);
 
         if (!post){
             return res.status(404).json({ message: "Post not found."});
