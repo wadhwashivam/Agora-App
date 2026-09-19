@@ -2,11 +2,11 @@ import * as db from "../database/queries.js";
 import { body, validationResult } from "express-validator";
 
 export const validateComment = [
-    body("content").trim().isLength({ max: 600}).withMessage("Maximum 600 Characters.").isLength({min: 4}).withMessage("Minimum 4 Characters.").escape()
+    body("content").trim().isLength({ max: 600}).withMessage("Maximum 600 Characters.").isLength({min: 4}).withMessage("Minimum 4 Characters.")
 ];
 
 export const validatePost = [
-    body("content").trim().isLength({max: 3000}).withMessage("Maximum 3000 Characters.").isLength({min: 60 }).withMessage("Minimum 60 Characters.").escape()
+    body("content").trim().isLength({max: 3000}).withMessage("Maximum 3000 Characters.").isLength({min: 60 }).withMessage("Minimum 60 Characters.")
 ];
 
 async function createPost(req,res,next){

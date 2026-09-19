@@ -19,8 +19,8 @@ function FollowButton({userId, initialIsFollowing}){
         setSubmitting(true);
 
         try {
-            await toggleFollow(userId);
-            setIsFollowing(true);
+            const data = await toggleFollow(userId);
+            setIsFollowing(data.following);
         } catch (error) {
             console.error(error);
         }finally{

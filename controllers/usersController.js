@@ -2,8 +2,8 @@ import * as db from "../database/queries.js";
 import { body, validationResult } from "express-validator";
 
 export const validateProfile = [
-    body("name").optional().trim().isLength({max: 50}).withMessage("Name can be maximum 12 characters.").escape(),
-    body("bio").optional().trim().isLength({max: 100}).withMessage("Bio can be maximum 100 characters.").escape(),
+    body("name").optional().trim().isLength({max: 50}).withMessage("Name can be maximum 12 characters."),
+    body("bio").optional().trim().isLength({max: 100}).withMessage("Bio can be maximum 100 characters."),
     body("avatar").optional().isURL().withMessage("Avatar can only be a URL of an image")
 ];
 

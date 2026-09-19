@@ -23,7 +23,7 @@ async function getPostById(postId){
     return data;
 }
 
-async function postCommentsByPostId(postId, {content}){
+async function postCommentsByPostId(postId, content){
     const data = await apiRequest(`/posts/${postId}/comments`, {
         method: "POST",
         body: JSON.stringify({ content }),

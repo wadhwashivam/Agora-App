@@ -11,7 +11,7 @@ const SERIF = '"Lora", Georgia, serif';
 function UserIndexPage(){
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [query, setQuery] = useState(null);
+    const [query, setQuery] = useState('');
     const [error, setError] = useState("");
 
     useEffect(()=> {
@@ -32,6 +32,14 @@ function UserIndexPage(){
         loadUsers();
         return () => {cancelled = true};
     },[]);
+
+    const filteredUsers = users.filter((user) => {
+        const q = query.toLowerCase();
+        return(
+            user.name?.toLowerCase().includes(q) ||
+            user.username.toLowerCase().includes(q)
+        );
+    })
 
     return(
         <Box sx={{ minHeight: '100vh', bgcolor: 'background.default'}}>
@@ -83,13 +91,13 @@ function UserIndexPage(){
                     </Typography>
                 )}
 
-                {!loading && !error && users.length === 0 && (
+                {!loading && !error && users.length > 0 &&  filteredUsers.length === 0 && (
                     <Typography sx={{ py: 6, textAlign: 'center', color: 'text.secondary' }}>
                         No one else here yet.
                     </Typography>
                 )}
 
-                {!loading && !error && users.map((user) => (
+                {!loading && !error && filteredUsers.map((user) => (
                     <UserCard key={user.id} user= {user} />
                 ))}
             </Box>

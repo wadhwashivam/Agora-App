@@ -15,7 +15,7 @@ function NavBar(){
     const LINKS = [
         {key: 'feed', label: 'Feed', path: '/feed'},
         {key: 'explore', label: 'Explore', path: '/users'},
-        {key: 'profile', label: 'Profile', path: `/users/${user?.id}` },
+        // {key: 'profile', label: 'Profile', path: `/users/${user?.id}` },
     ];
 
     function handleLogout(){
