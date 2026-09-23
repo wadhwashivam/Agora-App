@@ -5,31 +5,51 @@ services:
       - "3000:3000"
     env_file:
       - .env
-    environment:
-      - DATABASE_URL=postgres://postgres:postgres@db:5432/odinbook?schema=public
-    depends_on:
-      - db
-
-  db:
-    image: postgres:16-alpine
-    restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=odinbook
-    volumes:
-      - pgdata:/var/lib/postgresql/data
 
   frontend:
     build:
       context: ./frontend
       args:
-        - VITE_API_URL=http://localhost:3000
+        - VITE_API_URL=http://18.216.199.113:3000
     ports:
       - "5173:80"
     depends_on:
       - backend
 
-volumes:
-  pgdata:
+
+# The below one is for docker running on the local machine but when running on the AWS server, EC2, we don't need to connect to the local machine postgres it should connect to the RDS. 
+# services:
+#   backend:
+#     build: .
+#     ports:
+#       - "3000:3000"
+#     env_file:
+#       - .env
+#     environment:
+#       - DATABASE_URL=postgres://postgres:postgres@db:5432/odinbook?schema=public
+#     depends_on:
+#       - db
+
+#   db:
+#     image: postgres:16-alpine
+#     restart: always
+#     environment:
+#       - POSTGRES_USER=postgres
+#       - POSTGRES_PASSWORD=postgres
+#       - POSTGRES_DB=odinbook
+#     volumes:
+#       - pgdata:/var/lib/postgresql/data
+
+#   frontend:
+#     build:
+#       context: ./frontend
+#       args:
+#         - VITE_API_URL=http://localhost:3000
+#     ports:
+#       - "5173:80"
+#     depends_on:
+#       - backend
+
+# volumes:
+#   pgdata:
 
