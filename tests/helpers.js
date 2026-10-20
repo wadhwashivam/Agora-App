@@ -4,8 +4,7 @@ import prisma from "../database/prisma.js";
 
 export async function resetDb(){
     await prisma.$executeRawUnsafe(
-        'TRUNCATE TABLE "Comment", "Like", "Follow", "Post", "User" CASCADE'
-    );
+        'TRUNCATE TABLE "Comment", "Like", "Follow", "Post", "User" CASCADE');
 }
 
 let counter = 0;
