@@ -33,7 +33,7 @@ describe('POST /signup', () => {
         expect(res.status).toBe(409);
     });
 
-    it("returns 400 when passwords done't match", async () => {
+    it("returns 400 when passwords don't match", async () => {
         const res = await request(app).post("/signup").send({ ...validBody, confirmPassword: "different"});
 
         expect(res.status).toBe(400);
@@ -92,10 +92,32 @@ describe('POST /login', () => {
         expect(res.body.token).toBeUndefined();
     });
 
-    it("returns 401 when login with unknown username", async () => {
+    it("returns 401 when logging in with an unknown username", async () => {
         const res = await request(app).post("/login").send({ username: "nobody_here", password: "whatever123" });
         
         expect(res.status).toBe(401);
         expect(res.body.token).toBeUndefined();
+    });
+});
+
+describe("Protected routes", () => {
+    it("returns 401 when no token is sent", async () => {
+        const res = await request(app).get("/posts");
+
+        expect(res.status).toBe(401);
+    });
+
+    it("returns 401 when the token is invalid", async () => {
+        const res = await request(app).get("/posts").set("Authorization", "Bearer abc");
+
+        expect(res.status).toBe(401);
+    });
+
+    it("returns 200 with a valid token", async () => {
+        const {token} = await createUserWithToken();
+
+        const res = await request(app).get("/posts").set("Authorization", `Bearer ${token}`);
+
+        expect(res.status).toBe(200);
     });
 });
