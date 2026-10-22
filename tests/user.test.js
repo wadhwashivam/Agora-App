@@ -62,7 +62,7 @@ describe('PATCH /users/:id', () => {
         expect(bobAfter.bio).toBe(bob.bio);
     });
 
-    it("returns 200 patching own profile", async() => {
+    it("returns 200 and saves the change when editing your own profile", async() => {
         const {user: alice, token: aliceToken} = await createUserWithToken();
 
         const res = await request(app).patch(`/users/${alice.id}`).set("Authorization", `Bearer ${aliceToken}`).send({ bio: "New bio"});
