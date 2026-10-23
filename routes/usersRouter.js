@@ -8,7 +8,7 @@ const usersRouter = Router();
 usersRouter.get("/users", passport.authenticate("jwt", { session: false }), usersController.getUsers);
 usersRouter.get("/users/:id", passport.authenticate("jwt", { session: false }), usersController.userProfile);
 
-usersRouter.patch("/users/:id", passport.authenticate("jwt", { session: false }), requireOwnership ,usersController.editProfile);
+usersRouter.patch("/users/:id", passport.authenticate("jwt", { session: false }), requireOwnership , usersController.validateProfile, usersController.editProfile);
 
 usersRouter.post("/users/:id/follow", passport.authenticate("jwt", { session: false }), usersController.toggleFollow);
 

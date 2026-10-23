@@ -1,5 +1,3 @@
-import "dotenv/config";
-
 import express from "express";
 import cors from "cors";
 
@@ -24,9 +22,4 @@ app.use("/", usersRouter);
 app.use("/", postsRouter);
 app.use(errorHandler);
 
-app.listen(process.env.PORT, (error) =>{
-    if(error){
-        throw error;
-    }
-console.log("Listening on port: ", process.env.PORT);
-})
+export default app;

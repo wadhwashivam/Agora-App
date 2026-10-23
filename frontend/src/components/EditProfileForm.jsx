@@ -1,7 +1,7 @@
 import { Box, Typography, TextField, Button, Alert, Avatar, Divider } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/useAuth.js";
 
 const UI = '"Work Sans", system-ui, sans-serif';
 const SERIF = '"Lora", Georgia, serif';

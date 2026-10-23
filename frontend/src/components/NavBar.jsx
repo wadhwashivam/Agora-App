@@ -2,7 +2,7 @@ import { AppBar, Toolbar, Box, Typography, Button, Avatar, Divider } from '@mui/
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/useAuth.js";
 
 const UI = '"Work Sans", system-ui, sans-serif';
 const SERIF = '"Lora", Georgia, serif';

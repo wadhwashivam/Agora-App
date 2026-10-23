@@ -1,7 +1,7 @@
 import EditProfileForm from "../components/EditProfileForm";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/useAuth.js";
 
 import { useNavigate } from "react-router-dom";
 

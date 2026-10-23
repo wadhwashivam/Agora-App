@@ -1,11 +1,10 @@
-import { createContext, useState, useContext, useEffect } from "react";
+import { AuthContext } from "./useAuth.js";
+import { useState, useEffect } from "react";
 import { getToken, removeToken } from "../api/token.js";
 import { jwtDecode } from "jwt-decode";
 import apiRequest from "../api/client.js";
 
 import { login as authLogin } from "../api/auth.js";
-
-const AuthContext = createContext(null);
 
 function AuthProvider({ children }){
     const [token, setToken] = useState(null);
@@ -78,8 +77,4 @@ function AuthProvider({ children }){
     );
 }
 
-function useAuth(){
-    return useContext(AuthContext);
-}
-
-export { AuthProvider, useAuth };
+export { AuthProvider };

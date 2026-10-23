@@ -1,7 +1,7 @@
 import FollowButton from "../components/FollowButton";
 import PostCard from "../components/PostCard";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/useAuth.js";
 import { Avatar, Box, Button, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getUserProfile } from "../api/users";
