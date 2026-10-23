@@ -51,13 +51,13 @@ describe('POST /users/:id/follow', () => {
 
 describe('PATCH /users/:id', () => {
 
-    it("returns 401 when patching someone else's profile",async () => {
+    it("returns 403 when patching someone else's profile",async () => {
         const { token: aliceToken } = await createUserWithToken();
         const { user: bob } = await createUserWithToken();
 
-        const res = await request(app).patch(`/users/${bob.id}`).set("Authorizaiton", `Bearer ${aliceToken}`).send({ bio: "hacked"});
+        const res = await request(app).patch(`/users/${bob.id}`).set("Authorization", `Bearer ${aliceToken}`).send({ bio: "hacked"});
         
-        expect(res.status).toBe(401);
+        expect(res.status).toBe(403);
         const bobAfter = await prisma.user.findUnique({ where: { id : bob.id }});
         expect(bobAfter.bio).toBe(bob.bio);
     });
