@@ -1,6 +1,6 @@
 import { Avatar, Box, Button, InputBase,  Typography } from "@mui/material";
 import { useState } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../context/useAuth.js";
 import {createPost} from "../api/posts";
 
 
