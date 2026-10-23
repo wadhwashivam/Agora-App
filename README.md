@@ -13,8 +13,7 @@ The core premise: strip away every form of visual noise and media, and what's le
 - [Data Model](#data-model)
 - [API Endpoints](#api-endpoints)
 - [Project Structure](#project-structure)
-- [Local Development Setup]
-(#local-development-setup)
+- [Local Development Setup](#local-development-setup)
 - [Testing](#testing)
 - [Docker Setup](#docker-setup)
 - [Production Deployment (AWS)](#production-deployment-aws)
@@ -178,7 +177,7 @@ Agora-App/
 ### Backend
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/wadhwashivam/Agora-App/
 cd Agora-App
 npm install
 ```
