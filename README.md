@@ -1,5 +1,7 @@
 # Agora
 
+![CI](https://github.com/wadhwashivam/Agora-App/actions/workflows/ci.yml/badge.svg)
+
 A text-only social platform for long-form opinions and discourse — no images, no video, just argument. Built as the capstone project ("Odin Book") for The Odin Project's NodeJS course, then taken further with a full production deployment on Docker, AWS RDS, and AWS EC2.
 
 The core premise: strip away every form of visual noise and media, and what's left is a feed that rewards people who actually think through and write out their positions, rather than react in a single line. Posts run up to ~500 words; comments up to ~100.
@@ -11,7 +13,9 @@ The core premise: strip away every form of visual noise and media, and what's le
 - [Data Model](#data-model)
 - [API Endpoints](#api-endpoints)
 - [Project Structure](#project-structure)
-- [Local Development Setup](#local-development-setup)
+- [Local Development Setup]
+(#local-development-setup)
+- [Testing](#testing)
 - [Docker Setup](#docker-setup)
 - [Production Deployment (AWS)](#production-deployment-aws)
 - [Environment Variables](#environment-variables)
@@ -122,6 +126,7 @@ All endpoints except `/signup` and `/login` require a valid JWT in the `Authoriz
 ```
 Agora-App/
 ├── app.js
+├── server.js
 ├── Dockerfile
 ├── docker-compose.yml
 ├── prisma.config.js
@@ -197,7 +202,7 @@ npm run seed
 Start the server:
 
 ```bash
-node --watch app.js
+node --watch server.js
 ```
 
 ### Frontend
@@ -216,6 +221,46 @@ VITE_API_URL=http://localhost:3000
 ```bash
 npm run dev
 ```
+
+---
+
+## Testing
+
+The backend has integration tests covering authentication, users, and posts (signup and login validation, JWT protection, feed visibility, pagination limits, follow and like toggles, and ownership checks). They run against a real PostgreSQL database rather than mocks, using Vitest and Supertest.
+
+### Running tests locally
+
+Start a throwaway Postgres container for tests (port 5433 keeps it separate from your dev database):
+
+```bash
+docker run --name agora-test-db -e POSTGRES_PASSWORD=postgres -e POSTGRES_DB=agora_test -p 5433:5432 -d postgres:16-alpine
+```
+
+Create `.env.test` at the project root:
+
+```env
+DATABASE_URL="postgresql://postgres:postgres@localhost:5433/agora_test"
+JWT_SECRET="testsecret"
+NODE_ENV=test
+```
+
+Apply migrations to the test database, then run the suite:
+
+```bash
+DATABASE_URL="postgresql://postgres:postgres@localhost:5433/agora_test" npx prisma migrate deploy
+npm test
+```
+
+A safety guard refuses to run if `DATABASE_URL` does not point at `agora_test`, because each test truncates every table.
+
+### Continuous integration
+
+GitHub Actions runs on every pull request and every push to `main`:
+
+- **backend**: starts a Postgres service container, then runs `npm ci`, `prisma generate`, `prisma migrate deploy`, and `npm test`
+- **frontend**: runs `npm ci`, `npm run lint`, and `npm run build`
+
+`main` is protected, so a pull request cannot merge unless both checks pass.
 
 ---
 
